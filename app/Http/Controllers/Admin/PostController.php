@@ -41,14 +41,16 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->all();
+        
         $newPost=new Post();
         $newPost->title= $data['title'];
         $slug = Str::of($data['title'])->slug("-");
         $newPost->content= $data['content'];
         $newPost->published= isset($data['published']);
+        $newPost->category_id= $data['category_id'];
         $count=1;
         while (Post::where('slug',$slug)->first()) {
-            $slug= Str::of($data['Title'])->slug("-") . "-($count)";
+            $slug= Str::of($data['title'])->slug("-") . "-($count)";
             $count++;
         }
         $newPost->slug=$slug;
@@ -63,9 +65,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $post= Post::findOrFail($id);
+    public function show(Post $post)//id
+    {   
+        // $post= Post::findOrFail($id);
+        // dd($post->category);
         return view('admin.posts.show', compact('post'));
     }
 
@@ -77,7 +80,9 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        return view('admin.posts.index');
+        $post= Post::findOrFail($id);
+        $categories = Category::all();
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**

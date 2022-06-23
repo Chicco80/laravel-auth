@@ -17,8 +17,9 @@
       <label class="form-check-label" for="published">Pubblicato</label>
     </div>
     <div class="mb-3">
-      <label for="category">Category</label>
-      <select name="category" class="form-control" id="category">
+      <label for="category_id">Category</label>
+      <select name="category_id" class="form-control" id="category_id">
+        <option value="">Select Category</option>
       @foreach ($categories as $category)
       <option value="{{$category->id}}">{{$category->name}}</option>
       @endforeach
